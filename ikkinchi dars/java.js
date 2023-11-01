@@ -9,5 +9,5 @@
 // let a = 0||false||0||null||" "||undefined;
 // console.log(b);
 
-let a = 2 && 0 && 3 || 0 || false && 67 || 12
-console.log(a);
+// let a = 2 && 0 && 3 || 0 || false && 67 || 12
+// console.log(a);
