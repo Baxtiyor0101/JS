@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .container {
+        width: 600px;
+        height: 400px;
+        display: flex;
+        margin: 0 auto;
+        gap: 5px;
+        border:  2px solid black;
+      }
+      .item1 {
+        flex: 1;
+        background-color: aqua;
+      }
+      .item2 {
+        flex: 1;
+        background-color: coral;
+      }
+      h1{
+        background-color: chartreuse;
+        padding: 20px 10px;
+        border: 2px solid red;
+      }
+      button{
+        width: 70px;
+        height: 40px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="item1">
+
+        <h1> Toshmat's Score <span class="item1Score">0</span></h1>
+        <div>
+          <h2>number <span class="item1Random">0</span></h2>
+          <button class="item1Btn">Pick</button>
+        </div>
+      </div>
+      <div class="item2">
+        <h1>Eshmat's Score <span  class="item2Score">0</span></h1>
+        <div>
+          <h2>number <span class="item2Random">0</span></h2>
+          <button class="item2Btn">Pick</button>
+        </div>
+      </div>
+    </div>
+    <script src="./main.js"></script>
+  </body>
+</html>

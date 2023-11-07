@@ -1,0 +1,12 @@
+.wrap {
+  display: flex;
+  align-items: center;
+  background-color: aqua;
+  width: 500px;
+}
+
+.wrap > div {
+  /* border: 1px solid red; */
+  width: 100%;
+  /* height: 100%; */
+}
