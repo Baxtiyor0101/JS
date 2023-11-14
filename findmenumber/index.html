@@ -1,26 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-    <link rel="stylesheet" href="./style.css" />
-  </head>
-  <body>
-    <div class="wrap">
-      <div>
-        <button hidden="hidden" class="again">Again</button>
-        <h2 class="secretnumber">?</h2>
-        <h1 class="massage">Start Guessing ...</h1>
-        <h1>Score <span class="score">20</span></h1>
-        <h1>hightScore <span class="highscore">0</span></h1>
-      </div>
-      <div>
-        <input type="number" class="number" />
-        <button class="check">check</button>
-      </div>
-    </div>
-    <script src="./app.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Guess the Number Game</title>
+</head>
+<body>
+  <div class="container">
+    <h1>Guess the Number Game</h1>
+    <p id="message">Guess a number between 1 and 10</p>
+    <input type="number" id="guessInput">
+    <button onclick="checkGuess()">Submit Guess</button>
+  </div>
+
+  <script src="фзз.js"></script>
+</body>
 </html>
