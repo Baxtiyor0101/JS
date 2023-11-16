@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shopping Cart with Local Storage</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 5px;
+      margin-left: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Shopping Cart</h1>
+
+<label for="itemInput">Add an item:</label>
+<input type="text" id="itemInput" placeholder="Enter an item">
+<button onclick="addItem()">Add Item</button>
+
+<ul id="cartList"></ul>
+
+<script>
+  // Function to retrieve cart items from localStorage
+  function getCartItemsFromLocalStorage() {
+    const storedCartItems = localStorage.getItem('cartItems');
+    return storedCartItems ? JSON.parse(storedCartItems) : [];
+  }
+
+  // Function to save cart items to localStorage
+  function saveCartItemsToLocalStorage(cartItems) {
+    localStorage.setItem('cartItems', JSON.stringify(cartItems));
+  }
+
+  // Function to display cart items on the webpage
+  function displayCartItems() {
+    const cartList = document.getElementById('cartList');
+    cartList.innerHTML = '';
+
+    const cartItems = getCartItemsFromLocalStorage();
+
+    cartItems.forEach((item, index) => {
+      const li = document.createElement('li');
+      const itemName = document.createElement('div');
+      itemName.textContent = item.name;
+
+      const quantity = document.createElement('span');
+      quantity.textContent = `Quantity: ${item.quantity}`;
+
+      const removeButton = document.createElement('button');
+      removeButton.textContent = 'Remove';
+      removeButton.addEventListener('click', () => removeItem(index));
+
+      li.appendChild(itemName);
+      li.appendChild(quantity);
+      li.appendChild(removeButton);
+
+      cartList.appendChild(li);
+    });
+  }
+
+  // Function to add a new item to the cart
+  function addItem() {
+    const itemInput = document.getElementById('itemInput');
+    const newItemName = itemInput.value.trim();
+
+    if (newItemName !== '') {
+      const cartItems = getCartItemsFromLocalStorage();
+      const existingItemIndex = cartItems.findIndex(item => item.name === newItemName);
+
+      if (existingItemIndex !== -1) {
+        // If the item already exists in the cart, increase the quantity
+        cartItems[existingItemIndex].quantity++;
+      } else {
+        // If the item is not in the cart, add it with a quantity of 1
+        cartItems.push({ name: newItemName, quantity: 1 });
+      }
+
+      saveCartItemsToLocalStorage(cartItems);
+      displayCartItems();
+      itemInput.value = '';
+    }
+  }
+
+  // Function to remove an item from the cart
+  function removeItem(index) {
+    const cartItems = getCartItemsFromLocalStorage();
+    cartItems.splice(index, 1);
+    saveCartItemsToLocalStorage(cartItems);
+    displayCartItems();
+  }
+
+  // Display cart items when the page loads
+  displayCartItems();
+</script>
+
+</body>
+</html>

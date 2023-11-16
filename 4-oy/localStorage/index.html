@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notes App with Local Storage</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    textarea {
+      width: 80%;
+      height: 100px;
+      margin-bottom: 10px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .note {
+      width: 80%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Notes App</h1>
+
+<textarea id="noteInput" placeholder="Enter a new note"></textarea>
+<button onclick="addNote()">Add Note</button>
+<button onclick="clearNotes()">Clear All Notes</button>
+
+<ul id="noteList"></ul>
+
+<script>
+  // Function to retrieve notes from localStorage
+  function getNotesFromLocalStorage() {
+    const storedNotes = localStorage.getItem('notes');
+    return storedNotes ? JSON.parse(storedNotes) : [];
+  }
+
+  // Function to save notes to localStorage
+  function saveNotesToLocalStorage(notes) {
+    localStorage.setItem('notes', JSON.stringify(notes));
+  }
+
+  // Function to display notes on the webpage
+  function displayNotes() {
+    const noteList = document.getElementById('noteList');
+    noteList.innerHTML = '';
+
+    const notes = getNotesFromLocalStorage();
+
+    notes.forEach((note, index) => {
+      const li = document.createElement('li');
+      const noteText = document.createElement('div');
+      noteText.textContent = note.text;
+      noteText.className = 'note';
+
+      const editButton = document.createElement('button');
+      editButton.textContent = 'Edit';
+      editButton.addEventListener('click', () => editNote(index));
+
+      const deleteButton = document.createElement('button');
+      deleteButton.textContent = 'Delete';
+      deleteButton.addEventListener('click', () => deleteNote(index));
+
+      li.appendChild(noteText);
+      li.appendChild(editButton);
+      li.appendChild(deleteButton);
+
+      noteList.appendChild(li);
+    });
+  }
+
+  // Function to add a new note
+  function addNote() {
+    const noteInput = document.getElementById('noteInput');
+    const newNote = noteInput.value.trim();
+
+    if (newNote !== '') {
+      const notes = getNotesFromLocalStorage();
+      notes.push({ text: newNote });
+      saveNotesToLocalStorage(notes);
+      displayNotes();
+      noteInput.value = '';
+    }
+  }
+
+  // Function to edit a note
+  function editNote(index) {
+    const notes = getNotesFromLocalStorage();
+    const updatedNote = prompt('Edit note:', notes[index].text);
+
+    if (updatedNote !== null) {
+      notes[index].text = updatedNote.trim();
+      saveNotesToLocalStorage(notes);
+      displayNotes();
+    }
+  }
+
+  // Function to delete a note
+  function deleteNote(index) {
+    const notes = getNotesFromLocalStorage();
+    notes.splice(index, 1);
+    saveNotesToLocalStorage(notes);
+    displayNotes();
+  }
+
+  // Function to clear all notes
+  function clearNotes() {
+    localStorage.removeItem('notes');
+    displayNotes();
+  }
+
+  // Display notes when the page loads
+  displayNotes();
+</script>
+
+</body>
+</html>

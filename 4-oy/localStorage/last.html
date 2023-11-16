@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quiz App with Local Storage</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    h1 {
+      font-size: 1.5em;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      margin-bottom: 10px;
+    }
+    label {
+      margin-right: 10px;
+    }
+    button {
+      padding: 10px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Quiz App</h1>
+
+<ul id="questionList"></ul>
+
+<button onclick="submitQuiz()">Submit Quiz</button>
+<button onclick="clearQuiz()">Clear Quiz</button>
+
+<script>
+  const quizQuestions = [
+    {
+      question: 'What is the capital of France?',
+      options: ['Berlin', 'Madrid', 'Paris', 'Rome'],
+      correctAnswer: 'Paris',
+    },
+    {
+      question: 'Which planet is known as the Red Planet?',
+      options: ['Venus', 'Mars', 'Jupiter', 'Saturn'],
+      correctAnswer: 'Mars',
+    },
+    {
+      question: 'What is the largest mammal?',
+      options: ['Elephant', 'Blue Whale', 'Giraffe', 'Hippopotamus'],
+      correctAnswer: 'Blue Whale',
+    },
+  ];
+
+  // Function to retrieve quiz progress from localStorage
+  function getQuizProgressFromLocalStorage() {
+    const storedQuizProgress = localStorage.getItem('quizProgress');
+    return storedQuizProgress ? JSON.parse(storedQuizProgress) : {};
+  }
+
+  // Function to save quiz progress to localStorage
+  function saveQuizProgressToLocalStorage(quizProgress) {
+    localStorage.setItem('quizProgress', JSON.stringify(quizProgress));
+  }
+
+  // Function to display quiz questions on the webpage
+  function displayQuizQuestions() {
+    const questionList = document.getElementById('questionList');
+    questionList.innerHTML = '';
+
+    const quizProgress = getQuizProgressFromLocalStorage();
+
+    quizQuestions.forEach((question, index) => {
+      const li = document.createElement('li');
+      li.innerHTML = `<p>${question.question}</p>`;
+
+      const optionsList = document.createElement('ul');
+      question.options.forEach((option, optionIndex) => {
+        const optionLi = document.createElement('li');
+        const radioInput = document.createElement('input');
+        radioInput.type = 'radio';
+        radioInput.id = `q${index}_option${optionIndex}`;
+        radioInput.name = `q${index}`;
+        radioInput.value = option;
+        radioInput.checked = quizProgress[`q${index}`] === option;
+
+        const label = document.createElement('label');
+        label.htmlFor = `q${index}_option${optionIndex}`;
+        label.textContent = option;
+
+        optionLi.appendChild(radioInput);
+        optionLi.appendChild(label);
+        optionsList.appendChild(optionLi);
+      });
+
+      li.appendChild(optionsList);
+      questionList.appendChild(li);
+    });
+  }
+
+  // Function to submit the quiz and save user answers
+  function submitQuiz() {
+    const quizProgress = {};
+
+    quizQuestions.forEach((question, index) => {
+      const selectedOption = document.querySelector(`input[name="q${index}"]:checked`);
+      quizProgress[`q${index}`] = selectedOption ? selectedOption.value : null;
+    });
+
+    saveQuizProgressToLocalStorage(quizProgress);
+    displayQuizQuestions();
+  }
+
+  // Function to clear quiz progress
+  function clearQuiz() {
+    localStorage.removeItem('quizProgress');
+    displayQuizQuestions();
+  }
+
+  // Display quiz questions when the page loads
+  displayQuizQuestions();
+</script>
+
+</body>
+</html>

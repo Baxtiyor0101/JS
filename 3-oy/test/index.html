@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Memory Matching Game</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    #game-board {
+      display: grid;
+      grid-template-columns: repeat(4, 100px);
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .card {
+      width: 100px;
+      height: 100px;
+      background-color: #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2em;
+      cursor: pointer;
+    }
+    #result {
+      font-size: 1.5em;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Memory Matching Game</h1>
+
+<div id="game-board"></div>
+
+<div id="result"></div>
+
+<script>
+  const symbols = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+  let shuffledSymbols = [];
+  let flippedCards = [];
+  let matchedPairs = 0;
+
+  function startGame() {
+    shuffledSymbols = shuffleArray([...symbols]);
+    flippedCards = [];
+    matchedPairs = 0;
+
+    createGameBoard();
+    updateResult('');
+
+    setTimeout(() => {
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        card.classList.remove('flipped', 'matched');
+        card.innerHTML = '';
+        card.addEventListener('click', flipCard);
+      });
+    }, 2000);
+  }
+
+  function createGameBoard() {
+    const gameBoard = document.getElementById('game-board');
+    gameBoard.innerHTML = '';
+
+    for (let i = 0; i < shuffledSymbols.length; i++) {
+      const card = document.createElement('div');
+      card.classList.add('card');
+      card.dataset.symbol = shuffledSymbols[i];
+      gameBoard.appendChild(card);
+      card.addEventListener('click', flipCard);
+    }
+  }
+
+  function flipCard() {
+    if (flippedCards.length < 2 && !this.classList.contains('flipped') && !this.classList.contains('matched')) {
+      this.classList.add('flipped');
+      this.innerHTML = this.dataset.symbol;
+
+      flippedCards.push(this);
+
+      if (flippedCards.length === 2) {
+        setTimeout(checkMatch, 1000);
+      }
+    }
+  }
+
+  function checkMatch() {
+    const [card1, card2] = flippedCards;
+
+    if (card1.dataset.symbol === card2.dataset.symbol) {
+      card1.classList.add('matched');
+      card2.classList.add('matched');
+      matchedPairs++;
+
+      if (matchedPairs === symbols.length / 2) {
+        updateResult('Congratulations! You matched all pairs!');
+        setTimeout(startGame, 2000);
+      }
+    } else {
+      card1.classList.remove('flipped');
+      card2.classList.remove('flipped');
+    }
+
+    flippedCards = [];
+  }
+
+  function updateResult(message) {
+    document.getElementById('result').textContent = message;
+  }
+
+  function shuffleArray(array) {
+    const shuffledArray = array.slice();
+    for (let i = shuffledArray.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+    }
+    return shuffledArray;
+  }
+
+  // Start the game when the page loads
+  startGame();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Preferences with Local Storage</title>
+    <style>
+      body {
+        font-family: "Arial", sans-serif;
+        text-align: center;
+        margin-top: 50px;
+        transition: background-color 0.5s, color 0.5s;
+      }
+      h1 {
+        font-size: 1.5em;
+      }
+      label {
+        margin-right: 10px;
+      }
+      select {
+        margin-bottom: 20px;
+      }
+      button {
+        padding: 10px;
+        margin: 10px;
+      }
+
+      .dark {
+        background-color: black;
+        color: white;
+      }
+      .light {
+        background-color: white;
+        color: black;
+      }
+      .small {
+        font-size: 14px;
+      }
+      .small h1 {
+        font-size: 18px;
+      }
+      .medium {
+        font-size: 16px;
+      }
+      .medium h1 {
+        font-size: 22px;
+      }
+      .large {
+        font-size: 18px;
+      }
+      .large h1 {
+        font-size: 25px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>User Preferences</h1>
+
+    <label for="theme">Choose a theme:</label>
+    <select id="theme">
+      <option value="light">Light</option>
+      <option value="dark">Dark</option>
+    </select>
+
+    <br />
+
+    <label for="fontSize">Choose a font size:</label>
+    <select id="fontSize">
+      <option value="small">Small</option>
+      <option value="medium">Medium</option>
+      <option value="large">Large</option>
+    </select>
+
+    <br />
+
+    <button id="save" onclick="">Save Preferences</button>
+    <button id="clear">Clear Preferences</button>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
